@@ -380,18 +380,19 @@ class PrivateKey(Base, ECDSA, Schnorr):
         """
         return _tweak_private(self, lib.secp256k1_ec_privkey_tweak_mul, scalar)
 
-    def ecdsa_sign(self, msg, raw=False, digest=hashlib.sha256, custom_nonce=None):
+    def ecdsa_sign(self, msg, raw=False, digest=hashlib.sha256, custom_nonce=None, count=0):
         msg32 = _hash32(msg, raw, digest)
         raw_sig = ffi.new('secp256k1_ecdsa_signature *')
         nonce_fn = ffi.NULL
         nonce_data = ffi.NULL
+        recid = ffi.new('int *')
         if custom_nonce:
             nonce_fn, nonce_data = custom_nonce
         signed = lib.secp256k1_ecdsa_sign(
-            self.ctx, raw_sig, msg32, self.private_key, nonce_fn, nonce_data)
+            self.ctx, raw_sig, msg32, self.private_key, nonce_fn, nonce_data, count, recid)
         assert signed == 1
 
-        return raw_sig
+        return raw_sig, recid
 
     def ecdsa_sign_recoverable(self, msg, raw=False, digest=hashlib.sha256):
         if not HAS_RECOVERABLE:

@@ -119,7 +119,9 @@ int secp256k1_ecdsa_sign(
     const unsigned char *msg32,
     const unsigned char *seckey,
     secp256k1_nonce_function noncefp,
-    const void *ndata
+    const void *ndata,
+    unsigned int count,
+    int *recid
 );
 
 int secp256k1_ec_seckey_verify(
