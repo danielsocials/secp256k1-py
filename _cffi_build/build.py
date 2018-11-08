@@ -15,7 +15,7 @@ class Break(Exception):
     pass
 
 
-def _mk_ffi(sources, name="_libsecp256k1", bundled=True, **kwargs):
+def _mk_ffi(sources, name="_libsecp256k1_eos", bundled=True, **kwargs):
     ffi = FFI()
     code = []
     if 'INCLUDE_DIR' in os.environ:
@@ -58,7 +58,7 @@ if has_system_lib():
                         _base + [item[1] for item in combination],
                         name="_testcompile",
                         bundled=False,
-                        libraries=['secp256k1']
+                        libraries=['secp256k1_eos']
                     )
                     with redirect(sys.stderr, os.devnull), workdir():
                         _test_ffi.compile()
@@ -70,24 +70,24 @@ if has_system_lib():
         ffi = _mk_ffi(
             _base + [i[1] for i in _available],
             bundled=False,
-            libraries=['secp256k1']
+            libraries=['secp256k1_eos']
         )
-        print("Using system libsecp256k1 with modules: {}".format(
+        print("Using system libsecp256k1_eos with modules: {}".format(
             ", ".join(i[0] for i in _available))
         )
     else:
         # We didn't find any functioning combination of modules
         # Normally this shouldn't happen but just in case we will fall back
         # to the bundled library
-        print("Installed libsecp256k1 is unusable falling back to bundled version.")
+        print("Installed libsecp256k1_eos is unusable falling back to bundled version.")
 
 if ffi is None:
     # Library is not installed - use bundled one
-    print("Using bundled libsecp256k1")
+    print("Using bundled libsecp256k1_eos")
 
     # By default we only build with recovery enabled since the other modules
     # are experimental
     if os.environ.get('SECP_BUNDLED_EXPERIMENTAL'):
-        ffi = _mk_ffi(_base + list(_modules.values()), libraries=['secp256k1'])
+        ffi = _mk_ffi(_base + list(_modules.values()), libraries=['secp256k1_eos'])
     else:
-        ffi = _mk_ffi(_base + [_modules['recovery']], libraries=['secp256k1'])
+        ffi = _mk_ffi(_base + [_modules['recovery']], libraries=['secp256k1_eos'])

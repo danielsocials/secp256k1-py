@@ -34,7 +34,7 @@ from setup_support import absolute, build_flags, has_system_lib
 
 # Version of libsecp256k1 to download if none exists in the `libsecp256k1`
 # directory
-LIB_TARBALL_URL = "https://github.com/bitcoin-core/secp256k1/archive/c5b32e16c4d2560ce829caf88a413fc06fd83d09.tar.gz"
+LIB_TARBALL_URL = "https://github.com/haobtc/secp256k1/archive/893552f33af04ddb0c391b8980b3fdd3f78ae092.tar.gz"
 
 
 # We require setuptools >= 3.3
@@ -254,11 +254,11 @@ class develop(_develop):
 
 
 setup(
-    name="secp256k1",
+    name="secp256k1_eos",
     version="0.13.2",
 
     description='FFI bindings to libsecp256k1',
-    url='https://github.com/ludbb/secp256k1-py',
+    url='https://github.com/haobtc/secp256k1-py',
     author='Ludvig Broberg',
     author_email='lud@tutanota.com',
     license='MIT',
@@ -267,8 +267,8 @@ setup(
     install_requires=['cffi>=1.3.0'],
     tests_require=['pytest==2.8.7'],
 
-    packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1')),
-    ext_package="secp256k1",
+    packages=find_packages(exclude=('_cffi_build', '_cffi_build.*', 'libsecp256k1_eos')),
+    ext_package="secp256k1_eos",
     cffi_modules=[
         "_cffi_build/build.py:ffi"
     ],
